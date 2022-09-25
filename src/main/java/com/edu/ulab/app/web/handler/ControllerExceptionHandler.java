@@ -1,6 +1,7 @@
 package com.edu.ulab.app.web.handler;
 
 import com.edu.ulab.app.exception.NotFoundException;
+import com.edu.ulab.app.exception.PersonNotFoundException;
 import com.edu.ulab.app.web.response.BaseWebResponse;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,14 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new BaseWebResponse(createErrorMessage(exc)));
     }
+
+    @ExceptionHandler(PersonNotFoundException.class)
+    public ResponseEntity<BaseWebResponse> handlePersonNotFoundExceptionException(@NonNull final PersonNotFoundException exc) {
+        log.error(exc.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new BaseWebResponse(createErrorMessage(exc)));
+    }
+
 
     private String createErrorMessage(Exception exception) {
         final String message = exception.getMessage();
