@@ -9,6 +9,10 @@ import com.edu.ulab.app.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
@@ -55,5 +59,17 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
         log.info("Deleted user with id: {}", id);
         // реализовать недстающие методы
+    }
+
+
+    public List<UserDto> getAll() {
+        List<UserDto> listUserDto = new ArrayList<>();
+        userRepository.findAll().forEach(user -> {
+            UserDto userDto = userMapper.personToUserDto(user);
+            listUserDto.add(userDto);
+        });
+        log.info("Get all user: {}", listUserDto);
+        // реализовать недстающие методы
+        return listUserDto;
     }
 }
