@@ -1,6 +1,7 @@
 package com.edu.ulab.app.service.impl;
 
 import com.edu.ulab.app.dto.BookDto;
+import com.edu.ulab.app.dto.UserDto;
 import com.edu.ulab.app.entity.Book;
 import com.edu.ulab.app.exception.BookNotFoundException;
 import com.edu.ulab.app.mapper.BookMapper;
@@ -9,6 +10,7 @@ import com.edu.ulab.app.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -74,5 +76,15 @@ public class BookServiceImpl implements BookService {
     public void deleteBookByUserId(Long userId) {
         log.info("Deleted books by user id: {}", userId);
         bookRepository.deleteBooksByUserId(userId);
+    }
+
+    public List<BookDto> getAll() {
+        List<BookDto> listBookDto = new ArrayList<>();
+        bookRepository.findAll().forEach(book -> {
+            BookDto bookDto = bookMapper.bookToBookDto(book);
+            listBookDto.add(bookDto);
+        });
+        log.info("Get all books: {}", listBookDto);
+        return listBookDto;
     }
 }
